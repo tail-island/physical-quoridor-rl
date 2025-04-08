@@ -56,7 +56,7 @@ class PhysicalQuoridorEnv_(PhysicalQuoridorEnv):
                         normalize(observation[3][0], -20, 20),
                         normalize(observation[3][1], -20, 20),
 
-                        *np.asarray(np.ravel(observation[4]), np.float32),
+                        *np.ravel(observation[4]).astype(np.float32),
 
                         normalize(observation[5], 0, 10),
                         normalize(observation[6], 0, 10)
