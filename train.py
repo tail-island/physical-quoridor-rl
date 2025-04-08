@@ -25,11 +25,6 @@ config = (
         policies={"policy_0"},
         policy_mapping_fn=lambda agent, episode, **kwargs: "policy_0"
     )
-    .training(
-        model={
-            "vf_share_layers": True
-        }
-    )
     .rl_module(rl_module_spec=MultiRLModuleSpec(rl_module_specs={
         "policy_0": RLModuleSpec(
             model_config=DefaultModelConfig(
@@ -46,7 +41,7 @@ for i in range(1_000_000):
     algo.train()
 
     if (i + 1) % 10 == 0:
-        path = f"./checkpoints/{i + 1:06}"
+        checkpoint_path = f"./checkpoints/{i + 1:06}"
 
-        os.makedirs(path, exist_ok=True)
-        algo.save_to_path(path, filesystem=LocalFileSystem())
+        os.makedirs(checkpoint_path, exist_ok=True)
+        algo.save_to_path(checkpoint_path, filesystem=LocalFileSystem())
