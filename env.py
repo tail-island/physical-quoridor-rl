@@ -10,7 +10,7 @@ def convert_to_box(value, min_value, max_value):
 
 
 def convert_to_discrete(value, n):
-    return int(convert_to_box(value - 1e-9, 0, n))
+    return int(convert_to_box(max(value - 1e-9, 0), 0, n))
 
 
 def normalize(value, min_value, max_value):

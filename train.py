@@ -33,7 +33,7 @@ config = (
             )
         )
     }))
-    .env_runners(num_env_runners=4)
+    .env_runners(num_env_runners=1)
 )
 
 algo = config.build_algo()
