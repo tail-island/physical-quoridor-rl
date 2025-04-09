@@ -28,7 +28,8 @@ config = (
     .rl_module(rl_module_spec=MultiRLModuleSpec(rl_module_specs={
         "policy_0": RLModuleSpec(
             model_config=DefaultModelConfig(
-                fcnet_hiddens=[256, 512, 256, 128, 64]
+                fcnet_hiddens=[512, 512, 512, 512],
+                fcnet_activation="swish"
             )
         )
     }))
