@@ -37,7 +37,8 @@ config = (
         replay_buffer_config={
             "type": "MultiAgentEpisodeReplayBuffer",
             "capacity": 1_000_000,
-        }
+        },
+        gamma=0.99
     )
     .env_runners(num_env_runners=8)
 )
