@@ -2,7 +2,7 @@ import os
 
 from pyarrow.fs import LocalFileSystem
 from ray import init
-from ray.rllib.algorithms.sac import SACConfig
+from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.core.rl_module.default_model_config import DefaultModelConfig
 from ray.rllib.core.rl_module.multi_rl_module import MultiRLModuleSpec
 from ray.rllib.core.rl_module.rl_module import RLModuleSpec
@@ -19,7 +19,7 @@ register_env(
 )
 
 config = (
-    SACConfig()
+    PPOConfig()
     .environment("physical_quoridor")
     .multi_agent(
         policies={"policy_0"},
@@ -34,10 +34,6 @@ config = (
         )
     }))
     .training(
-        replay_buffer_config={
-            "type": "MultiAgentEpisodeReplayBuffer",
-            "capacity": 1_000_000,
-        },
         gamma=0.99
     )
     .env_runners(num_env_runners=8)
