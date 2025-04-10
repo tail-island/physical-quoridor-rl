@@ -12,9 +12,9 @@ def get_action(env, observation, rl_module):
     return np.clip(
         rl_module.get_inference_action_dist_cls().from_logits(
             rl_module.forward_inference({"obs": torch.from_numpy(observation).unsqueeze(0)})["action_dist_inputs"]
-        ).to_deterministic().sample()[0].numpy(),
-        a_min=env.action_space(0).low[0],
-        a_max=env.action_space(0).high[0],
+        ).to_deterministic().sample()[0].detach().numpy(),
+        a_min=env.action_space("player-0").low[0],
+        a_max=env.action_space("player-0").high[0],
     )
 
 
@@ -25,10 +25,10 @@ checkpoint_paths = list(sorted(
     ),
     reverse=True
 ))
-rl_modules = [
-    RLModule.from_checkpoint(checkpoint_paths[0] / "learner_group" / "learner" / "rl_module" / "policy_0", filesystem=LocalFileSystem()),
-    RLModule.from_checkpoint(checkpoint_paths[len(checkpoint_paths) // 2] / "learner_group" / "learner" / "rl_module" / "policy_0", filesystem=LocalFileSystem())
-]
+rl_modules = {
+    "player-0": RLModule.from_checkpoint(checkpoint_paths[0] / "learner_group" / "learner" / "rl_module" / "policy_0", filesystem=LocalFileSystem()),
+    "player-1": RLModule.from_checkpoint(checkpoint_paths[len(checkpoint_paths) // 2] / "learner_group" / "learner" / "rl_module" / "policy_0", filesystem=LocalFileSystem())
+}
 
 env = PhysicalQuoridorEnv_(render_mode="human")
 observations, infos = env.reset()
@@ -42,10 +42,10 @@ while True:
         )
     ))
 
-    if convert_to_discrete(actions[0][0], 2) == 0:
-        print(f"0: [{convert_to_box(actions[0][1], -1, 1): .3f}, {convert_to_box(actions[0][2], -1, 1): .3f}]")
+    if convert_to_discrete(actions["player-0"][0], 2) == 0:
+        print(f"0: [{convert_to_box(actions["player-0"][1], -1, 1): .3f}, {convert_to_box(actions["player-0"][2], -1, 1): .3f}]")
     else:
-        print(f"1: ({convert_to_discrete(actions[0][3], 8)}, {convert_to_discrete(actions[0][4], 8)}, {convert_to_discrete(actions[0][5], 2)})")
+        print(f"1: ({convert_to_discrete(actions["player-0"][3], 8)}, {convert_to_discrete(actions["player-0"][4], 8)}, {convert_to_discrete(actions["player-0"][5], 2)})")
 
     observations, rewards, terminations, truncations, infos = env.step(actions)
 
