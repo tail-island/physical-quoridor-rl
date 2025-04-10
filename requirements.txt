@@ -1,0 +1,5 @@
+gymnasium==1.0.0
+numpy==2.2.4
+pyarrow==19.0.1
+ray==2.44.1
+torch==2.6.0+cu126
